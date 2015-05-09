@@ -1,0 +1,64 @@
+#!/usr/bin/env perl
+package Bio::RetreveAssemblies::Script;
+use Moose;
+use Getopt::Long qw(GetOptionsFromArray);
+use File::Path qw(make_path);
+# ABSTRACT: Get assemblies for a project accession
+# PODNAME: retrieve_assemblies
+
+
+my ($help, $file_type,$output_directory,$organism_type);
+GetOptions(
+    't|organism_type' => \$organism_type,
+    'f|file_type=s' => \$file_type,
+	'o|output_directory=s' => \$output_directory,
+    'h|help' => \$help,
+);
+
+if($help || @ARGV == 0)
+{
+	print Bio::RetreveAssemblies->usage();
+}
+
+my $retrieve_assemblies = Bio::RetreveAssemblies->new(project_accessions => \@ARGV );
+
+$retrieve_assemblies->output_directory($output_directory) if($output_directory);
+$retrieve_assemblies->file_type($file_type) if($file_type);
+$retrieve_assemblies->organism_type($organism_type) if($organism_type);
+
+$retrieve_assemblies->download();
+
+
+1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+retrieve_assemblies - Get assemblies for a project accession
+
+=head1 VERSION
+
+version 0.0.1
+
+=head1 SYNOPSIS
+
+Download assemblies for a project accession
+
+=head1 AUTHOR
+
+Andrew J. Page <ap13@sanger.ac.uk>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2015 by Wellcome Trust Sanger Institute.
+
+This is free software, licensed under:
+
+  The GNU General Public License, Version 3, June 2007
+
+=cut
