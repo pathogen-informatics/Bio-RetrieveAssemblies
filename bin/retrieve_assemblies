@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-package Bio::RetreveAssemblies::Script;
+package Bio::RetrieveAssemblies::Script;
 use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
 use File::Path qw(make_path);
@@ -22,10 +22,10 @@ GetOptions(
 
 if($help || @ARGV == 0)
 {
-	print Bio::RetreveAssemblies->usage();
+	print Bio::RetrieveAssemblies->usage();
 }
 
-my $retrieve_assemblies = Bio::RetreveAssemblies->new(project_accessions => \@ARGV );
+my $retrieve_assemblies = Bio::RetrieveAssemblies->new(project_accessions => \@ARGV );
 
 $retrieve_assemblies->output_directory($output_directory) if($output_directory);
 $retrieve_assemblies->file_type($file_type) if($file_type);

@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-package Bio::RetreveAssemblies;
+package Bio::RetrieveAssemblies;
 use Moose;
 use File::Path qw(make_path);
 # ABSTRACT: Get assemblies for a project accession
