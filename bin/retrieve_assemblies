@@ -3,6 +3,7 @@ package Bio::RetrieveAssemblies::Script;
 use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
 use File::Path qw(make_path);
+use Bio::RetrieveAssemblies;
 # ABSTRACT: Get assemblies for a project accession
 # PODNAME: retrieve_assemblies
 
