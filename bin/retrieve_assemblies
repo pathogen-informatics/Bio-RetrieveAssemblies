@@ -22,7 +22,7 @@ GetOptions(
 
 if($help || @ARGV == 0)
 {
-	print Bio::RetrieveAssemblies->usage();
+	print Bio::RetrieveAssemblies->usage_text();
 }
 
 my $retrieve_assemblies = Bio::RetrieveAssemblies->new(project_accessions => \@ARGV );
