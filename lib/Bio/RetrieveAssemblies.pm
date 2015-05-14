@@ -17,6 +17,7 @@ has 'output_directory'   => ( is => 'rw', isa => 'Str',      default  => 'output
 has 'file_type'          => ( is => 'rw', isa => 'Str',      default  => 'annotation' );
 has 'organism_type'      => ( is => 'rw', isa => 'Str',      default  => 'BCT' );
 has 'query'              => ( is => 'rw', isa => 'Bool',     default  => 0 );
+has 'gff_file'           => ( is => 'rw', isa => 'Bool',     default  => 0 );
 
 sub usage_text {
     my ($self) = @_;
@@ -37,9 +38,15 @@ sub usage_text {
 	# Get assemblies instead of genbank files
 	retrieve_assemblies -f assembly PRJEB8877
 	
+	# Convert the Genbank files to GFF3 files
+	retrieve_assemblies -g PRJEB8877
+	
 	# Search with a specific query instead of an accession number
 	retrieve_assemblies -q Salmonella
 	
+	# Search for multiple queries
+	retrieve_assemblies -q Salmonella Staph Strep
+
 	# This message 
     retrieve_assemblies -h 
 	
@@ -104,6 +111,11 @@ sub _download_sequence_file {
     else {
         my $source_url = 'http://www.ncbi.nlm.nih.gov/Traces/wgs/?download=' . $sequence_accession . '.1.gbff.gz';
         system( "wget -O " . $self->output_directory . "/" . $sequence_accession . '.1.gbff.gz' . " $source_url" );
+		
+		if($self->gff_file)
+		{
+			system("bp_genbank2gff3.pl -o ".$self->output_directory . " ".$self->output_directory . "/" . $sequence_accession . '.1.gbff.gz');
+		}
     }
     return 1;
 }

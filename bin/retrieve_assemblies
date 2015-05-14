@@ -8,6 +8,7 @@ use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
 use File::Path qw(make_path);
 use Bio::RetrieveAssemblies;
+use Bio::SeqIO; # force dependancy on Bio::Perl
 
 # ABSTRACT: Get assemblies for a project accession
 # PODNAME: retrieve_assemblies
@@ -18,12 +19,13 @@ Download assemblies for a project accession
 
 =cut
 
-my ( $help, $file_type, $output_directory, $organism_type, $query );
+my ( $help, $file_type, $output_directory, $organism_type, $query ,$gff_file);
 GetOptions(
     't|organism_type=s'    => \$organism_type,
     'f|file_type=s'        => \$file_type,
     'o|output_directory=s' => \$output_directory,
     'q|query'              => \$query,
+	'g|gff_file'           => \$gff_file,
     'h|help'               => \$help,
 );
 
@@ -37,6 +39,7 @@ $retrieve_assemblies->output_directory($output_directory) if ($output_directory)
 $retrieve_assemblies->file_type($file_type)               if ($file_type);
 $retrieve_assemblies->organism_type($organism_type)       if ($organism_type);
 $retrieve_assemblies->query($query)                       if ($query);
+$retrieve_assemblies->gff_file($gff_file)                 if ($gff_file);
 
 $retrieve_assemblies->download();
 
