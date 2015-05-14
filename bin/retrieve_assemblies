@@ -1,9 +1,14 @@
 #!/usr/bin/env perl
 package Bio::RetrieveAssemblies::Script;
+
+BEGIN { unshift( @INC, '../lib' ) }
+BEGIN { unshift( @INC, './lib' ) }
+
 use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
 use File::Path qw(make_path);
 use Bio::RetrieveAssemblies;
+
 # ABSTRACT: Get assemblies for a project accession
 # PODNAME: retrieve_assemblies
 
@@ -13,26 +18,26 @@ Download assemblies for a project accession
 
 =cut
 
-my ($help, $file_type,$output_directory,$organism_type);
+my ( $help, $file_type, $output_directory, $organism_type, $query );
 GetOptions(
-    't|organism_type' => \$organism_type,
-    'f|file_type=s' => \$file_type,
-	'o|output_directory=s' => \$output_directory,
-    'h|help' => \$help,
+    't|organism_type=s'    => \$organism_type,
+    'f|file_type=s'        => \$file_type,
+    'o|output_directory=s' => \$output_directory,
+    'q|query=s'            => \$query,
+    'h|help'               => \$help,
 );
 
-if($help || @ARGV == 0)
-{
-	print Bio::RetrieveAssemblies->usage_text();
+if ( $help || @ARGV == 0 ) {
+    print Bio::RetrieveAssemblies->usage_text();
 }
 
-my $retrieve_assemblies = Bio::RetrieveAssemblies->new(project_accessions => \@ARGV );
+my $retrieve_assemblies = Bio::RetrieveAssemblies->new( project_accessions => \@ARGV );
 
-$retrieve_assemblies->output_directory($output_directory) if($output_directory);
-$retrieve_assemblies->file_type($file_type) if($file_type);
-$retrieve_assemblies->organism_type($organism_type) if($organism_type);
+$retrieve_assemblies->output_directory($output_directory) if ($output_directory);
+$retrieve_assemblies->file_type($file_type)               if ($file_type);
+$retrieve_assemblies->organism_type($organism_type)       if ($organism_type);
+$retrieve_assemblies->query($query)                       if ($query);
 
 $retrieve_assemblies->download();
-
 
 1;
