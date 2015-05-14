@@ -23,7 +23,7 @@ GetOptions(
     't|organism_type=s'    => \$organism_type,
     'f|file_type=s'        => \$file_type,
     'o|output_directory=s' => \$output_directory,
-    'q|query=s'            => \$query,
+    'q|query'              => \$query,
     'h|help'               => \$help,
 );
 
