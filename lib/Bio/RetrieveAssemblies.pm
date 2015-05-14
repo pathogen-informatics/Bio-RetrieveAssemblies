@@ -114,7 +114,8 @@ sub _download_sequence_file {
 		
 		if($self->gff_file)
 		{
-			system("bp_genbank2gff3.pl -o ".$self->output_directory . " ".$self->output_directory . "/" . $sequence_accession . '.1.gbff.gz');
+			system("bp_genbank2gff3.pl --quiet -o ".$self->output_directory . " ".$self->output_directory . "/" . $sequence_accession . '.1.gbff.gz');
+			unlink($self->output_directory . "/" . $sequence_accession . '.1.gbff.gz') if(defined($sequence_accession) && defined($self->output_directory ) && $sequence_accession ne "" && $self->output_directory ne "");
 		}
     }
     return 1;
