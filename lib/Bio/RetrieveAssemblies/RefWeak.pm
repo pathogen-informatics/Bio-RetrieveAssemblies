@@ -15,23 +15,9 @@ Get the blacklist of accession numbers from refweak
 =cut
 
 has 'url' => ( is => 'ro', isa => 'Str', default => 'https://raw.githubusercontent.com/refweak/refweak/master/refweak.tsv' );
-has 'accession_column_index' => ( is => 'ro', isa => 'Int', default => 0 );
-has 'accessions' => ( is => 'ro', isa => 'HashRef', lazy => 1, builder => '_build_accessions' );
-
-sub _build_accessions {
-    my ($self) = @_;
-
-    my %accessions;
-    for my $line ( @{ $self->_tsv_content } ) {
-        $self->_tsv_parser->parse($line);
-        my @columns = $self->_tsv_parser->fields();
-        next if($columns[$self->accession_column_index] eq "accession");
-        next if($columns[0] eq '' || $columns[0] =~ /^#/);
-        
-        $accessions{$columns[$self->accession_column_index]} = 1;
-    }
-    return \%accessions;
-}
+has 'accession_column_index'  => ( is => 'ro', isa => 'Int',     default => 0 );
+has 'accession_column_header' => ( is => 'ro', isa => 'Str',     default => "accession" );
+has 'accessions'              => ( is => 'ro', isa => 'HashRef', lazy    => 1, builder => '_build_accessions' );
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
