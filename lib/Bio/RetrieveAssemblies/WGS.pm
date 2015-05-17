@@ -16,7 +16,7 @@ Get all the WGS assemblies
 =cut
 
 has 'search_term'             => ( is => 'ro', isa => 'Str',      required => 1 );
-has '_query'                  => ( is => 'ro', isa => 'Str',      default  => '*' );
+has 'query'                   => ( is => 'ro', isa => 'Str',      default  => '*' );
 has 'accession_column_index'  => ( is => 'ro', isa => 'Int',      default  => 0 );
 has 'accession_column_header' => ( is => 'ro', isa => 'Str',      default  => "Prefix" );
 has 'organism_type'           => ( is => 'ro', isa => 'Str',      default  => 'BCT' );
@@ -35,7 +35,7 @@ sub _build__refweak_accessions
 
 sub _build_url {
     my ($self) = @_;
-    return "http://www.ncbi.nlm.nih.gov/Traces/wgs/?&size=100&term=" . $self->_query
+    return "http://www.ncbi.nlm.nih.gov/Traces/wgs/?&size=100&term=" . $self->query
       . "&order=prefix&dir=asc&version=last&state=live&update_date=any&create_date=any&retmode=text&size=all";
 }
 
