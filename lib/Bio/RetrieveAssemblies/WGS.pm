@@ -38,7 +38,7 @@ sub _build_url {
     if ( $self->annotation ) {
         # Only get files with annotation
         return "http://www.ncbi.nlm.nih.gov/Traces/wgs/?page=1&term=" . $self->query
-          . "&project=WGS&update_date=any&create_date=any&order=prefix&dir=a&have_annot_contigs=on&have_annot_scaffolds=on";
+          . "&order=prefix&dir=a&state=live&project=WGS&update_date=any&create_date=any&have_annot_contigs=on&have_annot_scaffolds=on&retmode=text&size=all";
     }
     else {
         # Get everything bar TSA

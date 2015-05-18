@@ -17,6 +17,7 @@ my $script_name = 'Bio::RetrieveAssemblies';
 my %scripts_and_expected_files = (
     '-q Mycobacterium PRJEB8877'           => 'downloaded_files/CVMX01.1.gbff.gz',
     '-q Mycobacterium -f gff PRJEB8877'    => 'downloaded_files/CVMX01.1.gbff.gz.gff',
+    '-q Mycobacterium -a -f gff PRJEB8877' => 'downloaded_files/CVMX01.1.gbff.gz.gff',
     '-q Mycobacterium -f fasta PRJEB8877'  => 'downloaded_files/CVMX01.1.fsa_nt.gz',
     '-q Mycobacterium -o my_dir PRJEB8877' => 'my_dir/CVMX01.1.gbff.gz',
 );

@@ -25,7 +25,7 @@ has 'script_name'      => ( is => 'ro', isa => 'Str', required => 1 );
 
 sub BUILD {
     my ($self) = @_;
-    my ( $help, $file_type, $output_directory, $organism_type,$query );
+    my ( $help, $file_type, $output_directory, $organism_type,$query,$annotation );
     GetOptionsFromArray(
         $self->args,
         'p|organism_type=s'    => \$organism_type,
