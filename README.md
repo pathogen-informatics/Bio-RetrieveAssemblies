@@ -2,6 +2,11 @@
 Download WGS assemblies or annotation from [GenBank](http://www.ncbi.nlm.nih.gov/Traces/wgs/?term=embl). 
 All accessions are screened against [RefWeak](https://github.com/refweak/refweak).
 
+
+## Installation
+	cpanm Bio::RetrieveAssemblies
+	
+## Usage
 	# Download all assemblies for Salmonella 
 	retrieve_assemblies Salmonella
 	
@@ -24,4 +29,4 @@ All accessions are screened against [RefWeak](https://github.com/refweak/refweak
 	retrieve_assemblies -p MAM Canis 
 	
 	# This message 
-  retrieve_assemblies -h 
+  	retrieve_assemblies -h 
