@@ -1,38 +1,22 @@
 #!/usr/bin/env perl
 package Bio::RetrieveAssemblies::Script;
+
+BEGIN { unshift( @INC, '../lib' ) }
+BEGIN { unshift( @INC, './lib' ) }
+
 use Moose;
-use Getopt::Long qw(GetOptionsFromArray);
-use File::Path qw(make_path);
 use Bio::RetrieveAssemblies;
-# ABSTRACT: Get assemblies for a project accession
+
+# ABSTRACT: Download WGS assemblies or annotation from GenBank
 # PODNAME: retrieve_assemblies
 
 =head1 SYNOPSIS
 
-Download assemblies for a project accession
+Download WGS assemblies or annotation from GenBank
 
 =cut
 
-my ($help, $file_type,$output_directory,$organism_type);
-GetOptions(
-    't|organism_type' => \$organism_type,
-    'f|file_type=s' => \$file_type,
-	'o|output_directory=s' => \$output_directory,
-    'h|help' => \$help,
-);
-
-if($help || @ARGV == 0)
-{
-	print Bio::RetrieveAssemblies->usage_text();
-}
-
-my $retrieve_assemblies = Bio::RetrieveAssemblies->new(project_accessions => \@ARGV );
-
-$retrieve_assemblies->output_directory($output_directory) if($output_directory);
-$retrieve_assemblies->file_type($file_type) if($file_type);
-$retrieve_assemblies->organism_type($organism_type) if($organism_type);
-
-$retrieve_assemblies->download();
+Bio::RetrieveAssemblies->new(args => \@ARGV, script_name => $0)->download();
 
 
 1;
