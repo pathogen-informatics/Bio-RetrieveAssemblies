@@ -19,10 +19,11 @@ has 'output_directory' => ( is => 'rw', isa => 'Str', default => 'downloaded_fil
 has 'file_type'        => ( is => 'rw', isa => 'Str', default => 'genbank' );
 has 'organism_type'    => ( is => 'rw', isa => 'Str', default => 'BCT' );
 has 'query'            => ( is => 'rw', isa => 'Str',      default  => '*' );
+has 'annotation'       => ( is => 'rw', isa => 'Bool',     default  => 0 );
 has 'args'             => ( is => 'ro', isa => 'ArrayRef', required => 1 );
 has 'script_name'      => ( is => 'ro', isa => 'Str', required => 1 );
 
-sub _setup_inputs {
+sub BUILD {
     my ($self) = @_;
     my ( $help, $file_type, $output_directory, $organism_type,$query );
     GetOptionsFromArray(
@@ -31,6 +32,7 @@ sub _setup_inputs {
         'f|file_type=s'        => \$file_type,
         'o|output_directory=s' => \$output_directory,
         'q|query=s'            => \$query,
+        'a|annotation'         => \$annotation,
         'h|help'               => \$help,
     );
 
@@ -43,6 +45,7 @@ sub _setup_inputs {
     $self->file_type($file_type)               if ($file_type);
     $self->organism_type($organism_type)       if ($organism_type);
     $self->query($query)                       if ($query);
+    $self->annotation($annotation)             if ($annotation);
 
     $self->search_term( $self->args->[0] );
 }
@@ -69,6 +72,9 @@ sub usage_text {
 	# Get GFF3 files instead of GenBank files
 	retrieve_assemblies -f gff Salmonella
     
+	# Get annotated GFF3 files instead of GenBank files (compatible with Roary)
+	retrieve_assemblies -a -f gff Salmonella
+    
 	# Get FASTA files instead of GenBank files
 	retrieve_assemblies -f fasta Salmonella
     
@@ -83,7 +89,6 @@ USAGE
 
 sub download {
     my ($self) = @_;
-    $self->_setup_inputs;
 
     my $wgs_assemblies = Bio::RetrieveAssemblies::WGS->new( query => $self->query, organism_type => $self->organism_type, search_term => $self->search_term );
 
