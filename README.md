@@ -21,6 +21,9 @@ All accessions are screened against [RefWeak](https://github.com/refweak/refweak
 	
 	# Get GFF3 files instead of GenBank files
 	retrieve_assemblies -f gff Salmonella
+
+	# Get annotated GFF3 files instead of GenBank files (compatible with Roary)
+	retrieve_assemblies -a -f gff Salmonella
     
 	# Get FASTA files instead of GenBank files
 	retrieve_assemblies -f fasta Salmonella
