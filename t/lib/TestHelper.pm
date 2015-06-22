@@ -15,10 +15,10 @@ sub mock_execute_script {
     eval("use $script_name ;");
     my $returned_values = 0;
     {
-    #    local *STDOUT;
-    #    open STDOUT, '>/dev/null' or warn "Can't open /dev/null: $!";
-    #    local *STDERR;
-    #    open STDERR, '>/dev/null' or warn "Can't open /dev/null: $!";
+     #   local *STDOUT;
+     #   open STDOUT, '>/dev/null' or warn "Can't open /dev/null: $!";
+     #   local *STDERR;
+     #   open STDERR, '>/dev/null' or warn "Can't open /dev/null: $!";
 
         for my $script_parameters ( sort keys %$scripts_and_expected_files ) {
             my $full_script = $script_parameters;
@@ -32,15 +32,15 @@ sub mock_execute_script {
             
             unlink($scripts_and_expected_files->{$script_parameters});
         }
-    #    close STDOUT;
-    #    close STDERR;
+     #   close STDOUT;
+     #   close STDERR;
     }
   
     ## Restore stdout.
     #open STDOUT, '>&OLDOUT' or die "Can't restore stdout: $!";
     #open STDERR, '>&OLDERR' or die "Can't restore stderr: $!";
-    #
-    ## Avoid leaks by closing the independent copies.
+    
+    # Avoid leaks by closing the independent copies.
     #close OLDOUT or die "Can't close OLDOUT: $!";
     #close OLDERR or die "Can't close OLDERR: $!";
     unlink('empty_file');
