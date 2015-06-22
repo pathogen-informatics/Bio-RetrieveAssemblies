@@ -1,6 +1,5 @@
 package Bio::RetrieveAssemblies::RemoteSpreadsheetRole;
 use Moose::Role;
-use LWP::Simple;
 use Text::CSV;
 use Data::Validate::URI qw(is_uri);
 use File::Slurp::Tiny qw(read_file write_file);
@@ -19,6 +18,7 @@ has 'accession_column_index'  => ( is => 'ro', isa => 'Int',       default  => 0
 has 'accession_column_header' => ( is => 'ro', isa => 'Str',       required => 1 );
 has '_tsv_parser'             => ( is => 'ro', isa => 'Text::CSV', lazy     => 1, builder => '_build__tsv_parser' );
 has '_tsv_content'            => ( is => 'ro', isa => 'ArrayRef',  lazy     => 1, builder => '_build__tsv_content' );
+has '_output_file'            => ( is => 'ro', isa => 'Str',       default => '.spreadsheet_query');
 
 sub _build__tsv_parser {
     my ($self) = @_;
@@ -35,8 +35,12 @@ sub _build__tsv_content {
 
     # If its not a url, then try opening it as a file
     if ( is_uri( $self->url ) ) {
-        $tsv_content = get( $self->url )
-          or Bio::RetrieveAssemblies::Exceptions::CouldntDownload->throw( error => 'Unable to get remote page' );
+		
+		system("wget -q -O ".$self->_output_file." '".$self->url."'");
+		# or Bio::RetrieveAssemblies::Exceptions::CouldntDownload->throw( error => "Unable to get remote page ".$self->url );
+        $tsv_content = read_file( $self->_output_file );
+		unlink($self->_output_file);
+          
     }
     else {
         $tsv_content = read_file( $self->url );

@@ -1,6 +1,5 @@
 package Bio::RetrieveAssemblies::AccessionFile;
 use Moose;
-use LWP::Simple;
 use Bio::RetrieveAssemblies::Exceptions;
 use File::Path qw(make_path);
 use File::Basename;
@@ -60,8 +59,8 @@ sub download_file {
     make_path( $self->output_directory );
 
     if ( is_uri( $self->url_to_file->[0] ) ) {
-        getstore( $self->url_to_file->[0], $self->url_to_file->[1] )
-          or Bio::RetrieveAssemblies::Exceptions::CouldntDownload->throw( error => 'Couldnt download ' . $self->url_to_file->[1] );
+		system("wget -q -O ".$self->url_to_file->[1]." '".$self->url_to_file->[0] ."'") ;
+		#or Bio::RetrieveAssemblies::Exceptions::CouldntDownload->throw( error => "Unable to get remote page ".$self->url_to_file->[0] )
     }
     else {
         copy( $self->url_to_file->[0], $self->url_to_file->[1] )
