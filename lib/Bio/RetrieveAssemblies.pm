@@ -1,5 +1,6 @@
 #!/usr/bin/env perl
 package Bio::RetrieveAssemblies;
+
 use Moose;
 use Getopt::Long qw(GetOptionsFromArray);
 use Bio::RetrieveAssemblies::WGS;

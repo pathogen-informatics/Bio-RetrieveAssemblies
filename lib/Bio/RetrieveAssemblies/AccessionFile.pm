@@ -1,4 +1,5 @@
 package Bio::RetrieveAssemblies::AccessionFile;
+
 use Moose;
 use Bio::RetrieveAssemblies::Exceptions;
 use File::Path qw(make_path);

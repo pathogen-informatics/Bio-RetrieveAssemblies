@@ -1,4 +1,5 @@
 package Bio::RetrieveAssemblies::RemoteSpreadsheetRole;
+
 use Moose::Role;
 use Text::CSV;
 use Data::Validate::URI qw(is_uri);

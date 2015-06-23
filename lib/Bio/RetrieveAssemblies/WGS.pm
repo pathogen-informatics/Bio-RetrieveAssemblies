@@ -1,4 +1,5 @@
 package Bio::RetrieveAssemblies::WGS;
+
 use Moose;
 use Bio::RetrieveAssemblies::RefWeak;
 with('Bio::RetrieveAssemblies::RemoteSpreadsheetRole');
