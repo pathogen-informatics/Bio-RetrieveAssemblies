@@ -1,4 +1,5 @@
 package Bio::RetrieveAssemblies::RefWeak;
+
 use Moose;
 with('Bio::RetrieveAssemblies::RemoteSpreadsheetRole');
 
