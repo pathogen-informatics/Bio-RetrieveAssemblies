@@ -28,9 +28,11 @@ has 'url'                 => ( is => 'ro', isa => 'Str',     lazy => 1, builder 
 has 'accessions'          => ( is => 'ro', isa => 'HashRef', lazy => 1, builder => '_build_accessions' );
 has '_refweak_accessions' => ( is => 'ro', isa => 'HashRef', lazy => 1, builder => '_build__refweak_accessions' );
 
+
 sub _build__refweak_accessions {
     my ($self) = @_;
-    return Bio::RetrieveAssemblies::RefWeak->new()->accessions();
+	$self->logger->info("Downloading list of bad assembly accession numbers from RefWeak");
+    return Bio::RetrieveAssemblies::RefWeak->new(logger => $self->logger, verbose => $self->verbose)->accessions();
 }
 
 sub _build_url {

@@ -8,6 +8,7 @@ use File::Copy;
 use Data::Validate::URI qw(is_uri);
 use Bio::SeqIO;    # force dependancy on Bio::Perl so that you get bp_genbank2gff3.pl
 use Moose::Util::TypeConstraints;
+with('Bio::RetrieveAssemblies::LoggingRole');
 
 # ABSTRACT: For a given accession get the file of annotation or sequence
 
@@ -60,7 +61,16 @@ sub download_file {
     make_path( $self->output_directory );
 
     if ( is_uri( $self->url_to_file->[0] ) ) {
-		system("wget -q -O ".$self->url_to_file->[1]." '".$self->url_to_file->[0] ."'") ;
+		my $quiet_str = "-q";
+		if($self->verbose)
+		{
+			$quiet_str = "";
+		}
+		
+		my $cmd = "wget $quiet_str -O ".$self->url_to_file->[1]." '".$self->url_to_file->[0] ."'";
+		$self->logger->info("Downloading accession: ".$self->accession);
+		$self->logger->info("Download cmd: ".$cmd);
+		system($cmd ) ;
 		#or Bio::RetrieveAssemblies::Exceptions::CouldntDownload->throw( error => "Unable to get remote page ".$self->url_to_file->[0] )
     }
     else {
@@ -76,11 +86,18 @@ sub download_file {
 
 sub _convert_gb_to_gff_cmd {
     my ($self) = @_;
-    return join( ' ', ( $self->_converter_exec, "--quiet", "-o", $self->output_directory, $self->url_to_file->[1] ) );
+	my $quiet_str =  "--quiet";
+	if($self->verbose)
+	{
+		$quiet_str = "";
+	}
+	
+    return join( ' ', ( $self->_converter_exec, $quiet_str, "-o", $self->output_directory, $self->url_to_file->[1] ) );
 }
 
 sub _convert_gb_to_gff {
     my ($self) = @_;
+	$self->logger->info("Converting from GB to GFF: ".$self->_convert_gb_to_gff_cmd );
     ( system( $self->_convert_gb_to_gff_cmd ) == 0 )
       or Bio::RetrieveAssemblies::Exceptions::GenBankToGFFConverter->throw(
         error => "Couldnt convert " . $self->accession . " GenBank file to GFF3" );

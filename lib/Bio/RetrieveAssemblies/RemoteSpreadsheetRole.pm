@@ -5,6 +5,8 @@ use Text::CSV;
 use Data::Validate::URI qw(is_uri);
 use File::Slurp::Tiny qw(read_file write_file);
 use Bio::RetrieveAssemblies::Exceptions;
+use Log::Log4perl qw(:easy);
+with('Bio::RetrieveAssemblies::LoggingRole');
 
 # ABSTRACT: Role for downloading a spreadsheet
 
@@ -37,8 +39,15 @@ sub _build__tsv_content {
     # If its not a url, then try opening it as a file
     if ( is_uri( $self->url ) ) {
 		
-		system("wget -q -O ".$self->_output_file." '".$self->url."'");
-		# or Bio::RetrieveAssemblies::Exceptions::CouldntDownload->throw( error => "Unable to get remote page ".$self->url );
+		$self->logger->info("Downloading url: ".$self->url);
+		my $quiet_str = "-q";
+		if($self->verbose)
+		{
+			$quiet_str = "";
+		}
+		my $cmd = "wget $quiet_str -O ".$self->_output_file." '".$self->url."'";
+		$self->logger->info("Downloading cmd: ".$cmd);
+		system($cmd);
         $tsv_content = read_file( $self->_output_file );
 		unlink($self->_output_file);
           
@@ -56,12 +65,16 @@ sub _build_accessions {
     my ($self) = @_;
 
     my %accessions;
+	$self->logger->info("Parsing downloaded file");
     for my $line ( @{ $self->_tsv_content } ) {
         $self->_tsv_parser->parse($line);
         my @columns = $self->_tsv_parser->fields();
         next if ( $columns[ $self->accession_column_index ] eq $self->accession_column_header );
         next if ( $columns[0] eq '' || $columns[0] =~ /^#/ );
-        next if ( $self->_filter_out_line( \@columns ) );
+        if ( $self->_filter_out_line( \@columns ) )
+		{
+			next ;
+		}
 
         $accessions{ $columns[ $self->accession_column_index ] } = 1;
     }
