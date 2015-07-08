@@ -71,9 +71,9 @@ sub BUILD {
 sub _version
 {
 	my ($self) = @_;
-	if(defined($Bio::RetrieveAssemblies::VERSION))
+	if(defined(Bio::RetrieveAssemblies->VERSION))
 	{
-	   return $Bio::RetrieveAssemblies::VERSION ."\n";
+	   return Bio::RetrieveAssemblies->VERSION ."\n";
     }
 	else
 	{
