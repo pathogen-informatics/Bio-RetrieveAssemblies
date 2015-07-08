@@ -73,7 +73,6 @@ sub _build_accessions {
         next if ( $columns[0] eq '' || $columns[0] =~ /^#/ );
         if ( $self->_filter_out_line( \@columns ) )
 		{
-			$self->logger->info("Skipping line, beginning with:\t".$columns[0]);
 			next ;
 		}
 
