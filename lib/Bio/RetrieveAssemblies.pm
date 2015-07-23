@@ -2,7 +2,7 @@ undef $VERSION;
 package Bio::RetrieveAssemblies;
 
 use Moose;
-use Bio::Perl 1.006924; # force BioPerl to be picked up
+use Bio::Perl; # force BioPerl to be picked up
 use Getopt::Long qw(GetOptionsFromArray);
 use Bio::RetrieveAssemblies::WGS;
 use Bio::RetrieveAssemblies::AccessionFile;
